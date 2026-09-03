@@ -1,0 +1,345 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Roman's Fragrance — Admin</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;0,600&family=Jost:wght@300;400;500&display=swap" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<style>
+  :root{
+    --ink:#111110;
+    --paper:#F4F0E8;
+    --paper-2:#EAE3D5;
+    --gold:#8C7A52;
+    --line: rgba(17,17,16,0.14);
+    --danger:#8a3b2f;
+  }
+  *{box-sizing:border-box;}
+  body{
+    margin:0; background:var(--paper); color:var(--ink);
+    font-family:'Jost', sans-serif;
+  }
+  h1,h2,h3{font-family:'Cormorant Garamond', serif; font-weight:600; margin:0;}
+  a{color:inherit;}
+  img{max-width:100%; display:block;}
+
+  header{
+    display:flex; align-items:center; justify-content:space-between;
+    padding:20px 5vw; border-bottom:1px solid var(--line);
+    background:rgba(244,240,232,0.94); position:sticky; top:0; z-index:10;
+  }
+  header h1{font-size:1.5rem;}
+  header a.back{font-size:0.82rem; text-decoration:underline; opacity:0.75;}
+
+  main{max-width:1100px; margin:0 auto; padding:5vh 5vw;}
+
+  /* ---- Login gate ---- */
+  #gate{
+    max-width:360px; margin:12vh auto; text-align:center;
+  }
+  #gate p{color:#5c584f; font-size:0.9rem; margin:10px 0 24px;}
+  #gate input{
+    width:100%; padding:13px 14px; border:1px solid var(--line);
+    background:#fff; font-family:'Jost'; font-size:0.95rem; margin-bottom:14px;
+  }
+  #gate button{
+    width:100%; padding:13px; background:var(--ink); color:var(--paper);
+    border:none; font-size:0.88rem; letter-spacing:0.04em; cursor:pointer;
+  }
+  #gateError{color:var(--danger); font-size:0.8rem; margin-top:10px; display:none;}
+
+  /* ---- Panel ---- */
+  #panel{display:none;}
+  .panel-note{
+    background:#fff; border:1px solid var(--line); padding:16px 18px;
+    font-size:0.85rem; color:#4a463f; line-height:1.6; margin-bottom:34px;
+  }
+
+  .section-title{
+    display:flex; justify-content:space-between; align-items:baseline;
+    border-bottom:1px solid var(--line); padding-bottom:14px; margin-bottom:26px;
+  }
+  .section-title h2{font-size:1.6rem;}
+
+  form#productForm{
+    background:#fff; border:1px solid var(--line); padding:26px;
+    display:grid; grid-template-columns:1fr 1fr; gap:18px; margin-bottom:50px;
+  }
+  form#productForm .full{grid-column:1/-1;}
+  .field label{display:block; font-size:0.75rem; letter-spacing:0.06em; color:var(--gold); margin-bottom:7px;}
+  .field input, .field textarea{
+    width:100%; padding:11px 12px; border:1px solid var(--line);
+    font-family:'Jost'; font-size:0.9rem; background:var(--paper);
+  }
+  .field textarea{resize:vertical; min-height:44px;}
+  .img-preview{
+    width:90px; height:90px; object-fit:cover; border:1px solid var(--line);
+    background:var(--paper-2); margin-top:10px;
+  }
+  .form-actions{
+    grid-column:1/-1; display:flex; gap:12px; justify-content:flex-end; margin-top:6px;
+  }
+  .btn{
+    padding:12px 26px; font-size:0.84rem; letter-spacing:0.03em; cursor:pointer;
+    border:1px solid var(--ink); background:none; color:var(--ink);
+  }
+  .btn-primary{background:var(--ink); color:var(--paper);}
+  .btn-ghost{border-color:var(--line); color:#6b665c;}
+
+  .list{display:flex; flex-direction:column; gap:14px;}
+  .row{
+    display:flex; align-items:center; gap:18px;
+    background:#fff; border:1px solid var(--line); padding:14px 16px;
+  }
+  .row img{width:60px; height:60px; object-fit:cover; flex-shrink:0;}
+  .row .info{flex:1; min-width:0;}
+  .row .info .n{font-family:'Cormorant Garamond'; font-size:1.15rem;}
+  .row .info .m{font-size:0.78rem; color:#7a7568; margin-top:2px; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;}
+  .row .price{font-size:0.88rem; color:var(--gold); white-space:nowrap;}
+  .row .actions{display:flex; gap:8px;}
+  .row .actions button{
+    background:none; border:1px solid var(--line); padding:7px 14px;
+    font-size:0.75rem; cursor:pointer;
+  }
+  .row .actions .del{color:var(--danger); border-color:rgba(138,59,47,0.35);}
+  .empty-state{text-align:center; padding:50px 0; color:#8a857a; font-family:'Cormorant Garamond'; font-size:1.1rem;}
+
+  @media (max-width:640px){
+    form#productForm{grid-template-columns:1fr;}
+    .row{flex-wrap:wrap;}
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <h1>Roman's Fragrance — Admin</h1>
+  <a class="back" href="index.html">&larr; View storefront</a>
+</header>
+
+<main>
+  <div id="gate">
+    <h2>Admin sign-in</h2>
+    <p>Enter the store password to manage fragrances.</p>
+    <input type="password" id="pwInput" placeholder="Password">
+    <button onclick="tryLogin()">Enter</button>
+    <div id="gateError">Incorrect password. Try again.</div>
+  </div>
+
+  <div id="panel">
+    <div class="panel-note">
+      Changes you make here save live to the shared store database — any customer visiting the storefront on their own phone will see your edits.
+    </div>
+
+    <div class="section-title"><h2 id="formTitle">Add a fragrance</h2></div>
+    <form id="productForm" onsubmit="return saveProduct(event)">
+      <input type="hidden" id="editId" value="">
+      <div class="field full">
+        <label>Name</label>
+        <input type="text" id="fName" placeholder="e.g. Al Dirgham" required>
+      </div>
+      <div class="field full">
+        <label>Description / notes</label>
+        <textarea id="fNote" placeholder="e.g. Ard Al Zaafaran &middot; 100ml"></textarea>
+      </div>
+      <div class="field">
+        <label>Price (&#8358;)</label>
+        <input type="number" id="fPrice" placeholder="25000" min="0" required>
+      </div>
+      <div class="field">
+        <label>Product photo</label>
+        <input type="file" id="fImage" accept="image/*">
+        <img id="fPreview" class="img-preview" style="display:none;">
+      </div>
+      <div class="form-actions">
+        <button type="button" class="btn btn-ghost" id="cancelEditBtn" onclick="resetForm()" style="display:none;">Cancel edit</button>
+        <button type="submit" class="btn btn-primary" id="submitBtn">Add fragrance</button>
+      </div>
+    </form>
+
+    <div class="section-title"><h2>Current fragrances</h2><span id="countLabel" style="font-size:0.8rem;color:#5c584f;"></span></div>
+    <div class="list" id="productList"></div>
+  </div>
+</main>
+
+<script>
+const ADMIN_PASSWORD = 'romans2026'; // simple gate only — not real security, swap for real auth once this has a backend
+
+const SUPABASE_URL = 'https://ebqlkzjxmvsbxbdciqek.supabase.co';
+const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImVicWxremp4bXZzYnhiZGNpcWVrIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODg0NTU3MzAsImV4cCI6MjEwNDAzMTczMH0.YW7qyAFdl5ksuI6Epv6CvodPF1lwPKpSdHWQ0PDa1o8';
+const sb = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+const IMAGE_BUCKET = 'product-images';
+
+
+let PRODUCTS = [];
+let pendingImageFile = null;   // raw File object, uploaded to Supabase Storage on save
+let pendingImageData = null;   // local base64 preview only — never sent to the DB
+
+async function loadProducts(){
+  const { data, error } = await sb.from('products').select('*').order('id', { ascending: true });
+  if(error){
+    console.error(error);
+    alert('Could not load products from the database: ' + error.message);
+    return [];
+  }
+  return data || [];
+}
+
+function tryLogin(){
+  const val = document.getElementById('pwInput').value;
+  if(val === ADMIN_PASSWORD){
+    document.getElementById('gate').style.display = 'none';
+    document.getElementById('panel').style.display = 'block';
+    refreshList();
+  } else {
+    document.getElementById('gateError').style.display = 'block';
+  }
+}
+document.getElementById('pwInput').addEventListener('keydown', e => { if(e.key === 'Enter') tryLogin(); });
+
+async function refreshList(){
+  PRODUCTS = await loadProducts();
+  renderList();
+}
+
+document.getElementById('fImage').addEventListener('change', function(e){
+  const file = e.target.files[0];
+  if(!file) return;
+  pendingImageFile = file;
+  const reader = new FileReader();
+  reader.onload = function(ev){
+    pendingImageData = ev.target.result;
+    const preview = document.getElementById('fPreview');
+    preview.src = pendingImageData;
+    preview.style.display = 'block';
+  };
+  reader.readAsDataURL(file);
+});
+
+function renderList(){
+  const list = document.getElementById('productList');
+  document.getElementById('countLabel').textContent = `${PRODUCTS.length} listed`;
+  if(PRODUCTS.length === 0){
+    list.innerHTML = `<div class="empty-state">No fragrances yet — add your first one above.</div>`;
+    return;
+  }
+  list.innerHTML = PRODUCTS.map(p => `
+    <div class="row">
+      <img src="${p.img}" alt="${p.name}">
+      <div class="info">
+        <div class="n">${p.name}</div>
+        <div class="m">${p.note || ''}</div>
+      </div>
+      <div class="price">&#8358;${Number(p.price).toLocaleString()}</div>
+      <div class="actions">
+        <button onclick="editProduct(${p.id})">Edit</button>
+        <button class="del" onclick="deleteProduct(${p.id})">Delete</button>
+      </div>
+    </div>
+  `).join('');
+}
+
+// Uploads the pending file to the product-images bucket and returns its public URL
+async function uploadPendingImage(){
+  if(!pendingImageFile) return null;
+  const ext = (pendingImageFile.name.split('.').pop() || 'jpg').toLowerCase().replace(/[^a-z0-9]/g, '') || 'jpg';
+  const path = `${Date.now()}-${Math.random().toString(36).slice(2,8)}.${ext}`;
+  const { error: upErr } = await sb.storage.from(IMAGE_BUCKET).upload(path, pendingImageFile, {
+    cacheControl: '3600',
+    upsert: false
+  });
+  if(upErr) throw upErr;
+  const { data } = sb.storage.from(IMAGE_BUCKET).getPublicUrl(path);
+  return data.publicUrl;
+}
+
+async function saveProduct(evt){
+  evt.preventDefault();
+  const submitBtn = document.getElementById('submitBtn');
+  const editId = document.getElementById('editId').value;
+  const name = document.getElementById('fName').value.trim();
+  const note = document.getElementById('fNote').value.trim();
+  const price = Number(document.getElementById('fPrice').value);
+
+  if(!editId && !pendingImageFile){
+    alert('Please choose a product photo.');
+    return false;
+  }
+
+  submitBtn.disabled = true;
+  const originalLabel = submitBtn.textContent;
+  submitBtn.textContent = 'Saving…';
+
+  try{
+    let imgUrl = null;
+    if(pendingImageFile){
+      imgUrl = await uploadPendingImage();
+    }
+
+    if(editId){
+      const updates = { name, note, price };
+      if(imgUrl) updates.img = imgUrl;
+      const { error } = await sb.from('products').update(updates).eq('id', editId);
+      if(error) throw error;
+    } else {
+      const { error } = await sb.from('products').insert([{ name, note, price, img: imgUrl }]);
+      if(error) throw error;
+    }
+
+    await refreshList();
+    resetForm();
+  } catch(err){
+    console.error(err);
+    alert('Could not save this fragrance: ' + err.message);
+  } finally {
+    submitBtn.disabled = false;
+    submitBtn.textContent = originalLabel;
+  }
+  return false;
+}
+
+function editProduct(id){
+  const p = PRODUCTS.find(x => x.id == id);
+  if(!p) return;
+  document.getElementById('editId').value = p.id;
+  document.getElementById('fName').value = p.name;
+  document.getElementById('fNote').value = p.note || '';
+  document.getElementById('fPrice').value = p.price;
+  const preview = document.getElementById('fPreview');
+  preview.src = p.img;
+  preview.style.display = 'block';
+  pendingImageFile = null;
+  pendingImageData = null;
+  document.getElementById('formTitle').textContent = 'Edit fragrance';
+  document.getElementById('submitBtn').textContent = 'Save changes';
+  document.getElementById('cancelEditBtn').style.display = 'inline-block';
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+async function deleteProduct(id){
+  const p = PRODUCTS.find(x => x.id == id);
+  if(!p) return;
+  if(!confirm(`Remove "${p.name}" from the storefront?`)) return;
+  const { error } = await sb.from('products').delete().eq('id', id);
+  if(error){
+    alert('Could not delete this fragrance: ' + error.message);
+    return;
+  }
+  await refreshList();
+}
+
+function resetForm(){
+  document.getElementById('productForm').reset();
+  document.getElementById('editId').value = '';
+  document.getElementById('fPreview').style.display = 'none';
+  pendingImageFile = null;
+  pendingImageData = null;
+  document.getElementById('formTitle').textContent = 'Add a fragrance';
+  document.getElementById('submitBtn').textContent = 'Add fragrance';
+  document.getElementById('cancelEditBtn').style.display = 'none';
+}
+</script>
+</body>
+</html>
