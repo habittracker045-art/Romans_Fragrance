@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Roman's Fragrance</title>
+<title>All Fragrances — Roman's Fragrance</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,500;0,600;0,700;1,500;1,600&family=Jost:wght@300;400;500&display=swap" rel="stylesheet">
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
@@ -11,10 +11,8 @@
   :root{
     --ink:#15120E;
     --ink-2:#1D1811;
-    --ink-3:#241D14;
     --paper:#F5F1E6;
     --paper-2:#EAE0C7;
-    --paper-3:#DED0AA;
     --gold:#B8862E;
     --gold-deep:#8C6316;
     --gold-bright:#D9AD54;
@@ -41,13 +39,12 @@
   a{color:inherit;text-decoration:none;}
   img{max-width:100%;display:block;}
 
-  /* ---------- DIVIDERS ---------- */
   .gold-rule{
     height:1px; width:100%;
     background:linear-gradient(90deg, transparent 0%, var(--gold) 18%, var(--gold-bright) 50%, var(--gold) 82%, transparent 100%);
     opacity:0.9;
   }
-  .gold-rule.on-dark{ opacity:0.6; }
+  .gold-rule.on-dark{opacity:0.6;}
 
   /* ---------- HEADER ---------- */
   header{
@@ -109,106 +106,32 @@
   .search-form button:hover{color:var(--gold);}
   .search-form svg{width:17px; height:17px; stroke:currentColor; fill:none; stroke-width:2;}
 
-  /* ---------- HERO CAROUSEL ---------- */
-  .hero-carousel{
-    position:relative;
-    overflow:hidden;
-    background:var(--ink);
-  }
-  .hero-track{
-    display:flex;
-    transition:transform .6s cubic-bezier(.65,0,.35,1);
-    touch-action:pan-y;
-  }
-  .hero-slide{
-    flex:0 0 100%;
-    min-height:82vh;
-    display:flex;
-    align-items:center;
-    padding:8vh 5vw;
-    position:relative;
-  }
-  .hero-slide.promo-a{
+  /* ---------- PAGE HEAD BANNER ---------- */
+  .catalog-banner{
     background:
-      linear-gradient(90deg, rgba(9,7,5,0.78) 0%, rgba(9,7,5,0.48) 55%, rgba(9,7,5,0.2) 100%),
-      url('hero-bg.jpg') center 30% / cover no-repeat;
-  }
-  .hero-slide.promo-b{
-    background:
-      radial-gradient(ellipse at 78% 30%, rgba(184,134,46,0.20), transparent 60%),
-      radial-gradient(ellipse at 10% 90%, rgba(184,134,46,0.10), transparent 55%),
+      radial-gradient(ellipse at 80% 20%, rgba(184,134,46,0.16), transparent 60%),
       var(--ink);
+    color:var(--paper);
+    padding:9vh 5vw 7vh;
   }
-  .hero-slide.product-slide{
-    background:
-      radial-gradient(ellipse at 20% 15%, rgba(184,134,46,0.14), transparent 55%),
-      var(--ink);
+  .catalog-banner .eyebrow{
+    font-size:0.72rem; letter-spacing:0.26em; color:var(--gold-bright); margin-bottom:18px;
   }
-  .hero-copy{max-width:600px;}
-  .hero-copy .eyebrow{
-    font-size:0.72rem; letter-spacing:0.26em; color:var(--gold-bright); margin-bottom:20px;
+  .catalog-banner h1{
+    font-size:clamp(2.2rem, 4vw, 3.4rem); color:#fdfaf3; margin:0 0 16px 0;
   }
-  .hero-copy h1{
-    font-size:clamp(2.7rem, 5vw, 4.6rem);
-    line-height:1.04;
-    margin:0 0 24px 0;
-    color:#fdfaf3;
+  .catalog-banner p{
+    max-width:560px; font-size:1rem; line-height:1.7; color:rgba(253,250,243,0.8); margin:0;
   }
-  .hero-copy h1 em{font-style:italic; color:var(--gold-bright); font-weight:500;}
-  .hero-copy p{
-    max-width:440px; font-size:1.04rem; line-height:1.7; color:rgba(253,250,243,0.84); margin-bottom:36px;
+  .back-link{
+    display:inline-block; margin-bottom:26px; font-size:0.82rem;
+    color:var(--gold-bright); letter-spacing:0.04em;
+    transition:color .2s;
   }
-  .btn-primary{
-    display:inline-block; background:var(--gold); color:#1b1408;
-    padding:15px 36px; font-size:0.85rem; letter-spacing:0.07em;
-    border:1px solid var(--gold); transition: background .2s, color .2s, border-color .2s, transform .2s;
-    box-shadow:0 12px 26px -10px rgba(184,134,46,0.55);
-  }
-  .btn-primary:hover{background:transparent; color:var(--gold-bright); border-color:var(--gold-bright);}
-
-  .hero-product-inner{
-    display:flex; align-items:center; gap:60px;
-    width:100%; max-width:1100px; margin:0 auto;
-  }
-  .hero-product-frame{
-    flex:0 0 320px; aspect-ratio:1/1; overflow:hidden;
-    background:var(--paper-2);
-    box-shadow:0 26px 50px -18px rgba(0,0,0,0.55);
-  }
-  .hero-product-frame img{width:100%; height:100%; object-fit:cover;}
-  .hero-product-copy{max-width:460px;}
-  .hero-product-price{
-    font-family:'Playfair Display', serif; font-size:1.55rem; color:var(--gold-bright); margin-bottom:30px;
-  }
-
-  .hero-arrow{
-    position:absolute; top:50%; transform:translateY(-50%);
-    width:46px; height:46px; border-radius:50%;
-    background:rgba(245,241,230,0.12);
-    border:1px solid rgba(245,241,230,0.35);
-    color:#f6f1e5; font-size:1.5rem; line-height:1; cursor:pointer;
-    display:flex; align-items:center; justify-content:center;
-    transition: background .2s, border-color .2s;
-    z-index:5;
-  }
-  .hero-arrow:hover{background:rgba(184,134,46,0.35); border-color:var(--gold-bright);}
-  .hero-arrow.prev{left:24px;}
-  .hero-arrow.next{right:24px;}
-  .hero-dots{
-    position:absolute; bottom:26px; left:50%; transform:translateX(-50%);
-    display:flex; gap:10px; z-index:5;
-  }
-  .hero-dot{
-    width:9px; height:9px; border-radius:50%; padding:0;
-    background:rgba(245,241,230,0.4);
-    border:1px solid rgba(245,241,230,0.6);
-    cursor:pointer;
-    transition:background .2s, transform .2s, border-color .2s;
-  }
-  .hero-dot.active{background:var(--gold-bright); border-color:var(--gold-bright); transform:scale(1.2);}
+  .back-link:hover{color:var(--gold);}
 
   /* ---------- SECTION HEADERS ---------- */
-  .section{padding: 10vh 5vw; max-width:1400px; margin:0 auto;}
+  .section{padding: 8vh 5vw 10vh; max-width:1400px; margin:0 auto;}
   .section-head{
     display:flex; justify-content:space-between; align-items:baseline;
     padding-bottom:22px; margin-bottom:54px; position:relative;
@@ -220,43 +143,10 @@
   .section-head h2{font-size:2.2rem; margin:0;}
   .section-head span{font-size:0.8rem; color:#6b6255; font-style:italic;}
 
-  /* ---------- PRODUCT SHELF (homepage) ---------- */
-  .shelf-wrap{position:relative;}
-  .shelf-track{
-    display:flex; gap:28px; overflow-x:auto; scroll-snap-type:x mandatory;
-    padding:6px 4px 26px; scrollbar-width:none; -ms-overflow-style:none;
+  /* ---------- FULL GRID ---------- */
+  .grid{
+    display:grid; grid-template-columns:repeat(3, 1fr); gap:46px 32px;
   }
-  .shelf-track::-webkit-scrollbar{display:none;}
-  .shelf-card{flex:0 0 260px; scroll-snap-align:start;}
-  .see-more-card{
-    flex:0 0 210px; scroll-snap-align:start;
-    display:flex; flex-direction:column; align-items:center; justify-content:center;
-    gap:16px; text-align:center; padding:20px;
-    border:1px solid var(--line); background:#fff;
-    aspect-ratio:0.82/1;
-    box-shadow:var(--shadow-card);
-    transition:border-color .2s, box-shadow .3s ease;
-  }
-  .see-more-card:hover{border-color:var(--gold); box-shadow:var(--shadow-card-hover);}
-  .see-more-card .sm-icon{
-    width:52px; height:52px; border-radius:50%; border:1px solid var(--gold);
-    display:flex; align-items:center; justify-content:center; font-size:1.4rem; color:var(--gold-deep);
-  }
-  .see-more-card .sm-label{font-family:'Playfair Display', serif; font-size:1.08rem; font-weight:600;}
-  .see-more-card .sm-sub{font-size:0.76rem; color:#7a7568;}
-  .shelf-arrow{
-    position:absolute; top:38%; transform:translateY(-50%);
-    width:42px; height:42px; border-radius:50%;
-    background:#fff; border:1px solid var(--line); color:var(--ink);
-    font-size:1.3rem; cursor:pointer; display:flex; align-items:center; justify-content:center;
-    box-shadow:var(--shadow-card); z-index:3;
-    transition:border-color .2s, color .2s;
-  }
-  .shelf-arrow:hover{border-color:var(--gold); color:var(--gold-deep);}
-  .shelf-arrow.prev{left:-21px;}
-  .shelf-arrow.next{right:-21px;}
-
-  /* ---------- PRODUCT CARD ---------- */
   .card{cursor:default;}
   .card .frame{
     position:relative; aspect-ratio:1/1; overflow:hidden;
@@ -305,40 +195,7 @@
   }
   .order-now-btn:hover{background:var(--gold-deep); color:#fff;}
 
-  /* ---------- ABOUT STRIP (dark section) ---------- */
-  .about{
-    background:
-      radial-gradient(ellipse at 20% 20%, rgba(184,134,46,0.10), transparent 55%),
-      var(--ink);
-    color:var(--paper);
-    padding:11vh 5vw; text-align:center;
-    position:relative;
-  }
-  .about .quote-mark{
-    font-family:'Playfair Display', serif; font-style:italic; color:var(--gold);
-    font-size:3rem; line-height:1; margin-bottom:8px; opacity:0.85;
-  }
-  .about p{
-    max-width:680px; margin:0 auto; font-family:'Playfair Display', serif;
-    font-size:1.7rem; font-style:italic; line-height:1.55; color:#f6f1e5;
-  }
-  .about .who{margin-top:26px; font-family:'Jost'; font-size:0.78rem; letter-spacing:0.22em; color:var(--gold-bright);}
-
-  /* ---------- CONTACT (cream section) ---------- */
-  .contact-grid{
-    display:grid; grid-template-columns:repeat(auto-fit,minmax(220px,1fr)); gap:36px;
-  }
-  .contact-grid .label{
-    font-size:0.72rem; letter-spacing:0.18em; color:var(--gold-deep); margin-bottom:12px;
-  }
-  .contact-grid .value{
-    font-family:'Playfair Display', serif; font-size:1.35rem; margin:0; word-break:break-word;
-  }
-  .contact-grid .desc{
-    font-size:0.94rem; line-height:1.65; margin:0; color:#3f3a30;
-  }
-
-  /* ---------- FOOTER (dark section) ---------- */
+  /* ---------- FOOTER ---------- */
   footer{
     background:var(--ink); color:var(--paper);
     padding:8vh 5vw 5vh;
@@ -405,23 +262,22 @@
   .whatsapp-btn:hover{opacity:0.9; background:#28372a;}
   .df-note{font-size:0.7rem; color:#8a857a; text-align:center; margin-top:12px;}
 
+  .empty-state{
+    text-align:center; padding:70px 0; color:#8a857a;
+    font-family:'Playfair Display'; font-size:1.2rem;
+  }
+
   @media (max-width: 860px){
-    .hero-slide{min-height:64vh; padding-top:11vh;}
-    .hero-copy p{max-width:none;}
-    .hero-product-inner{flex-direction:column; text-align:center; gap:30px;}
-    .hero-product-frame{flex-basis:auto; width:220px;}
-    .hero-product-copy{max-width:none;}
-    .hero-arrow{display:none;}
-    .shelf-arrow{display:none;}
+    .grid{grid-template-columns:repeat(2,1fr); gap:30px 18px;}
     nav{display:none;}
-    .section{padding:8vh 6vw;}
+    .section{padding:6vh 6vw 8vh;}
+    .catalog-banner{padding:7vh 6vw 6vh;}
     .search-form input{width:110px;}
   }
   @media (max-width: 520px){
+    .grid{grid-template-columns:1fr 1fr;}
     .brand-text .name{font-size:1.1rem;}
     .section-head h2{font-size:1.7rem;}
-    .shelf-card{flex-basis:220px;}
-    .see-more-card{flex-basis:180px;}
     .header-actions{gap:10px;}
     .search-form{padding:0 4px 0 12px;}
     .search-form input{width:70px; font-size:0.8rem;}
@@ -440,9 +296,9 @@
     </div>
   </div>
   <nav>
-    <a href="#shop">Shop</a>
-    <a href="#about">About</a>
-    <a href="#contact">Contact</a>
+    <a href="index.html#shop">Shop</a>
+    <a href="index.html#about">About</a>
+    <a href="index.html#contact">Contact</a>
   </nav>
   <div class="header-actions">
     <form class="search-form" role="search" onsubmit="return submitSearch(event)">
@@ -455,104 +311,19 @@
   </div>
 </header>
 
-<section class="hero-carousel" id="heroCarousel">
-  <div class="hero-track" id="heroTrack">
-
-    <div class="hero-slide promo-a">
-      <div class="hero-copy">
-        <div class="eyebrow">SIGNATURE SCENTS &middot; LAGOS</div>
-        <h1>Scent is the <em>quiet</em><br>signature you leave<br>behind.</h1>
-        <p>Roman's Fragrance curates a small collection of perfumes built to last through the day and be remembered long after. Order in a few taps, pick up or get it delivered.</p>
-        <a href="#shop" class="btn-primary">Explore the Collection</a>
-      </div>
-    </div>
-
-    <div class="hero-slide product-slide" id="heroProductSlide1" style="display:none;">
-      <div class="hero-product-inner">
-        <div class="hero-product-frame">
-          <img id="heroProduct1Img" src="" alt="">
-        </div>
-        <div class="hero-copy hero-product-copy">
-          <div class="eyebrow">FEATURED FRAGRANCE</div>
-          <h1 id="heroProduct1Name"></h1>
-          <p id="heroProduct1Note"></p>
-          <div class="hero-product-price" id="heroProduct1Price"></div>
-          <a href="#shop" class="btn-primary">Shop This Scent</a>
-        </div>
-      </div>
-    </div>
-
-    <div class="hero-slide promo-b">
-      <div class="hero-copy">
-        <div class="eyebrow">NEW ARRIVALS &middot; RESTOCKED</div>
-        <h1>Every bottle,<br><em>hand</em>-picked.</h1>
-        <p>From oud-heavy classics to lighter everyday wears &mdash; the full collection is one scroll away, with new fragrances added regularly.</p>
-        <a href="#shop" class="btn-primary">Browse All Fragrances</a>
-      </div>
-    </div>
-
-    <div class="hero-slide product-slide" id="heroProductSlide2" style="display:none;">
-      <div class="hero-product-inner">
-        <div class="hero-product-frame">
-          <img id="heroProduct2Img" src="" alt="">
-        </div>
-        <div class="hero-copy hero-product-copy">
-          <div class="eyebrow">CUSTOMER FAVOURITE</div>
-          <h1 id="heroProduct2Name"></h1>
-          <p id="heroProduct2Note"></p>
-          <div class="hero-product-price" id="heroProduct2Price"></div>
-          <a href="#shop" class="btn-primary">Shop This Scent</a>
-        </div>
-      </div>
-    </div>
-
-  </div>
-
-  <button class="hero-arrow prev" onclick="heroPrev()" aria-label="Previous slide">&#8249;</button>
-  <button class="hero-arrow next" onclick="heroNext()" aria-label="Next slide">&#8250;</button>
-  <div class="hero-dots" id="heroDots"></div>
+<section class="catalog-banner">
+  <a class="back-link" href="index.html">&larr; Back to storefront</a>
+  <div class="eyebrow">FULL CATALOGUE</div>
+  <h1>Every fragrance we carry.</h1>
+  <p>The complete collection, in one place. Add anything to your cart, or tap Order Now to send a quick WhatsApp request straight to Roman.</p>
 </section>
-<div class="gold-rule on-dark"></div>
 
-<section class="section" id="shop">
+<section class="section">
   <div class="section-head">
-    <h2>The Collection</h2>
+    <h2>All Fragrances</h2>
     <span id="itemTally">Loading&hellip;</span>
   </div>
-  <div class="shelf-wrap">
-    <button class="shelf-arrow prev" onclick="shelfScroll(-1)" aria-label="Scroll left">&#8249;</button>
-    <div class="shelf-track" id="productShelf"></div>
-    <button class="shelf-arrow next" onclick="shelfScroll(1)" aria-label="Scroll right">&#8250;</button>
-  </div>
-</section>
-
-<div class="gold-rule"></div>
-<section class="about" id="about">
-  <div class="quote-mark">&ldquo;</div>
-  <p>We didn't want to sell perfume. We wanted to sell the ten seconds after someone walks past you, and turns around.</p>
-  <div class="who">ROMAN &mdash; FOUNDER</div>
-</section>
-<div class="gold-rule on-dark"></div>
-
-<section class="section" id="contact">
-  <div class="section-head">
-    <h2>Visit or Order</h2>
-    <span>We reply within the hour</span>
-  </div>
-  <div class="contact-grid">
-    <div>
-      <div class="label">PHONE</div>
-      <p class="value">0814 420 0158</p>
-    </div>
-    <div>
-      <div class="label">EMAIL</div>
-      <p class="value" style="word-break:break-all;">obedinedu2000@gmail.com</p>
-    </div>
-    <div>
-      <div class="label">HOW ORDERING WORKS</div>
-      <p class="desc">Add fragrances to your cart, then send the order straight to WhatsApp &mdash; no card details needed.</p>
-    </div>
-  </div>
+  <div class="grid" id="productGrid"></div>
 </section>
 
 <footer>
@@ -568,9 +339,9 @@
     </div>
     <div class="col">
       <h4>SHOP</h4>
-      <a href="#shop">Featured fragrances</a>
+      <a href="index.html#shop">Featured fragrances</a>
       <a href="products.html">All fragrances</a>
-      <a href="#about">Our story</a>
+      <a href="index.html#about">Our story</a>
     </div>
   </div>
   <div class="fin">Demo site &mdash; built for Roman's Fragrance. &copy; 2026 &middot; <a href="admin.html">Store admin</a></div>
@@ -606,7 +377,6 @@ async function loadProducts(){
 
 let PRODUCTS = [];
 let cart = {};
-const SHELF_LIMIT = 6;
 const quickQty = {};
 
 function fmt(n){ return "\u20a6" + Number(n).toLocaleString(); }
@@ -619,92 +389,6 @@ function submitSearch(evt){
   return false;
 }
 
-/* ---------- Hero carousel ---------- */
-let heroIndex = 0;
-let heroSlideCount = 0;
-let heroAutoTimer = null;
-let heroTouchStartX = null;
-
-function populateHeroProducts(){
-  const featured = PRODUCTS.slice(0, 2);
-  const slide1 = document.getElementById('heroProductSlide1');
-  const slide2 = document.getElementById('heroProductSlide2');
-
-  if(featured[0]){
-    document.getElementById('heroProduct1Img').src = featured[0].img;
-    document.getElementById('heroProduct1Img').alt = featured[0].name;
-    document.getElementById('heroProduct1Name').textContent = featured[0].name;
-    document.getElementById('heroProduct1Note').textContent = featured[0].note || '';
-    document.getElementById('heroProduct1Price').textContent = fmt(featured[0].price);
-    slide1.style.display = 'flex';
-  }
-  if(featured[1]){
-    document.getElementById('heroProduct2Img').src = featured[1].img;
-    document.getElementById('heroProduct2Img').alt = featured[1].name;
-    document.getElementById('heroProduct2Name').textContent = featured[1].name;
-    document.getElementById('heroProduct2Note').textContent = featured[1].note || '';
-    document.getElementById('heroProduct2Price').textContent = fmt(featured[1].price);
-    slide2.style.display = 'flex';
-  }
-}
-
-function buildHeroDots(){
-  const wrap = document.getElementById('heroDots');
-  wrap.innerHTML = '';
-  for(let i=0; i<heroSlideCount; i++){
-    const dot = document.createElement('button');
-    dot.className = 'hero-dot' + (i === heroIndex ? ' active' : '');
-    dot.setAttribute('aria-label', `Go to slide ${i+1}`);
-    dot.addEventListener('click', () => goToHeroSlide(i));
-    wrap.appendChild(dot);
-  }
-}
-
-function updateHeroTrack(){
-  document.getElementById('heroTrack').style.transform = `translateX(-${heroIndex * 100}%)`;
-  document.querySelectorAll('.hero-dot').forEach((d,i) => d.classList.toggle('active', i === heroIndex));
-}
-
-function goToHeroSlide(i){
-  if(heroSlideCount === 0) return;
-  heroIndex = (i + heroSlideCount) % heroSlideCount;
-  updateHeroTrack();
-  restartHeroAuto();
-}
-function heroNext(){ goToHeroSlide(heroIndex + 1); }
-function heroPrev(){ goToHeroSlide(heroIndex - 1); }
-
-function restartHeroAuto(){
-  if(heroAutoTimer) clearInterval(heroAutoTimer);
-  heroAutoTimer = setInterval(() => goToHeroSlide(heroIndex + 1), 6000);
-}
-
-function initHeroCarousel(){
-  heroSlideCount = document.querySelectorAll('#heroTrack .hero-slide:not([style*="display: none"])').length;
-  heroIndex = 0;
-  buildHeroDots();
-  updateHeroTrack();
-  restartHeroAuto();
-
-  const track = document.getElementById('heroTrack');
-  track.addEventListener('touchstart', e => {
-    heroTouchStartX = e.touches[0].clientX;
-    if(heroAutoTimer) clearInterval(heroAutoTimer);
-  }, {passive:true});
-  track.addEventListener('touchend', e => {
-    if(heroTouchStartX === null) return;
-    const dx = e.changedTouches[0].clientX - heroTouchStartX;
-    if(Math.abs(dx) > 40){ dx < 0 ? heroNext() : heroPrev(); }
-    else { restartHeroAuto(); }
-    heroTouchStartX = null;
-  }, {passive:true});
-  document.getElementById('heroCarousel').addEventListener('mouseenter', () => {
-    if(heroAutoTimer) clearInterval(heroAutoTimer);
-  });
-  document.getElementById('heroCarousel').addEventListener('mouseleave', restartHeroAuto);
-}
-
-/* ---------- Product shelf ---------- */
 function cardMarkup(p){
   return `
     <div class="frame">
@@ -729,29 +413,15 @@ function cardMarkup(p){
   `;
 }
 
-function renderShelf(){
-  const track = document.getElementById('productShelf');
+function renderGrid(){
+  const grid = document.getElementById('productGrid');
   const tally = document.getElementById('itemTally');
+  tally.textContent = `${PRODUCTS.length} fragrance${PRODUCTS.length === 1 ? '' : 's'}`;
   if(PRODUCTS.length === 0){
-    track.innerHTML = `<div style="padding:60px 40px; color:#8a857a; font-family:'Playfair Display'; font-size:1.15rem;">No fragrances listed yet.</div>`;
-    tally.textContent = '';
+    grid.innerHTML = `<div class="empty-state" style="grid-column:1/-1;">No fragrances listed yet.</div>`;
     return;
   }
-  tally.textContent = `${PRODUCTS.length} fragrance${PRODUCTS.length === 1 ? '' : 's'}`;
-  const shown = PRODUCTS.slice(0, SHELF_LIMIT);
-  const cards = shown.map(p => `<div class="shelf-card"><div class="card">${cardMarkup(p)}</div></div>`).join('');
-  const seeMore = `
-    <a class="see-more-card" href="products.html">
-      <div class="sm-icon">&#8594;</div>
-      <div class="sm-label">See More</div>
-      <div class="sm-sub">${PRODUCTS.length} fragrances total</div>
-    </a>
-  `;
-  track.innerHTML = cards + seeMore;
-}
-
-function shelfScroll(dir){
-  document.getElementById('productShelf').scrollBy({ left: dir * 300, behavior: 'smooth' });
+  grid.innerHTML = PRODUCTS.map(p => `<div class="card">${cardMarkup(p)}</div>`).join('');
 }
 
 function stepQuick(id, delta){
@@ -777,7 +447,6 @@ function orderNow(id){
   window.open(`https://wa.me/2348144200158?text=${message}`, "_blank");
 }
 
-/* ---------- Cart ---------- */
 function addToCart(id){
   cart[id] = (cart[id] || 0) + 1;
   updateCartUI();
@@ -858,9 +527,7 @@ function sendOrder(){
 
 async function init(){
   PRODUCTS = await loadProducts();
-  populateHeroProducts();
-  initHeroCarousel();
-  renderShelf();
+  renderGrid();
   updateCartUI();
 }
 init();
