@@ -272,16 +272,24 @@
     nav{display:none;}
     .section{padding:6vh 6vw 8vh;}
     .catalog-banner{padding:7vh 6vw 6vh;}
-    .search-form input{width:110px;}
   }
+  /* Header collapses to two rows: brand+cart on top, full-width search below */
+  @media (max-width: 620px){
+    header{padding:16px 5vw; gap:0; row-gap:12px;}
+    .header-actions{display:contents;}
+    .brand{order:1;}
+    .cart-btn{order:2;}
+    .search-form{order:3; flex:1 1 100%; width:100%; height:46px;}
+    .search-form input{width:auto; flex:1; font-size:0.9rem;}
+    .brand img{height:36px;}
+    .brand-text .name{font-size:1.08rem;}
+    .brand-text .sub{font-size:0.56rem;}
+  }
+
   @media (max-width: 520px){
     .grid{grid-template-columns:1fr 1fr;}
     .brand-text .name{font-size:1.1rem;}
     .section-head h2{font-size:1.7rem;}
-    .header-actions{gap:10px;}
-    .search-form{padding:0 4px 0 12px;}
-    .search-form input{width:70px; font-size:0.8rem;}
-    .cart-btn{padding:10px 14px;}
   }
 </style>
 </head>
@@ -356,7 +364,7 @@
   <div class="drawer-items" id="drawerItems"></div>
   <div class="drawer-foot">
     <div class="df-total"><span>Total</span><span id="drawerTotal">&#8358;0</span></div>
-    <button class="whatsapp-btn" onclick="sendOrder()">Place Order on WhatsApp</button>
+    <button class="whatsapp-btn" onclick="sendOrder()">Place Order</button>
     <div class="df-note">You'll confirm final price & delivery with Roman directly.</div>
   </div>
 </div>
